@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ask DongFeng"
+  short_description: "Turn vague goals into control loops"
+  default_prompt: "Use $ask-dongfeng to turn this vague goal into a reviewable control-loop artifact."
