@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/fengluisobel/ask-dongfeng/actions/workflows/ci.yml/badge.svg)](https://github.com/fengluisobel/ask-dongfeng/actions/workflows/ci.yml)
 
-English | [简体中文](./README.zh-CN.md)
+English | [Chinese README](./README.zh-CN.md)
 
 Ask DongFeng is a Hermes-first skill for turning vague goals, product ideas, workflows, or project systems into reviewable engineering-control loops.
 
@@ -49,6 +49,10 @@ Use it when the real risk is not "we need more tasks," but "the work may drift w
    ```
 
 3. Read one example prompt below and decide whether this is the right upstream framework for your spec/plan workflow.
+
+If you want the fastest "before vs after" view, read:
+
+- [examples/demo-before-after.md](./examples/demo-before-after.md)
 
 ## Quick Start
 
@@ -160,6 +164,25 @@ The workflow can become an endless "needs more investigation" loop.
 Model this as a control loop. Focus on stopping rules, repeated-experiment detection, verdict gates, and system review.
 ```
 
+## Before / After Demo
+
+This repo includes a compact comparison between:
+
+- a normal planning-style answer
+- an Ask DongFeng control-artifact answer
+
+Read:
+
+- [examples/demo-before-after.md](./examples/demo-before-after.md)
+
+The point is not that Ask DongFeng is always longer. The point is that it adds:
+
+- observable signals
+- deviation thresholds
+- correction actions
+- human review gates
+- feedback cadence
+
 ## Validators
 
 Ask DongFeng includes two lightweight validators.
@@ -204,24 +227,25 @@ Both validators are intentionally conservative. They check package and artifact 
 
 ```text
 ask-dongfeng/
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── agents/
-│   └── openai.yaml
-├── examples/
-│   └── sample-control-artifact.yaml
-├── references/
-│   ├── artifact-schema.md
-│   ├── control-framework.md
-│   ├── examples.md
-│   └── review-questions.md
-├── scripts/
-│   ├── validate_artifact.py
-│   └── validate_skill.py
-├── LICENSE
-├── README.md
-└── SKILL.md
+|-- .github/
+|   `-- workflows/
+|       `-- ci.yml
+|-- agents/
+|   `-- openai.yaml
+|-- examples/
+|   |-- demo-before-after.md
+|   `-- sample-control-artifact.yaml
+|-- references/
+|   |-- artifact-schema.md
+|   |-- control-framework.md
+|   |-- examples.md
+|   `-- review-questions.md
+|-- scripts/
+|   |-- validate_artifact.py
+|   `-- validate_skill.py
+|-- LICENSE
+|-- README.md
+`-- SKILL.md
 ```
 
 ## Boundaries
