@@ -1,0 +1,56 @@
+type: control-artifact
+version: 0.1
+goal: "Turn a vague MVP-skill idea into a reviewable control loop"
+controlled_object: "The conversion of a fuzzy product idea into a reviewable MVP spec"
+system_boundary:
+  in_scope:
+    - single-skill planning
+    - reviewable spec output
+    - human approval before final handoff
+  out_of_scope:
+    - SaaS implementation
+    - database design
+    - automatic code generation
+variables:
+  controlled:
+    - spec completeness
+    - scope clarity
+  observed:
+    - missing section count
+    - ambiguity count
+  control:
+    - follow-up questions
+    - template constraints
+  disturbance:
+    - vague user input
+    - scope creep
+  lagging:
+    - downstream implementation success
+sensors:
+  - name: section-check
+    source: generated spec
+    cadence: each run
+comparators:
+  - name: readiness
+    green: all required sections present
+    yellow: one required section missing
+    red: two or more required sections missing
+controllers:
+  - name: re-ask
+    trigger: yellow_or_red
+    action: ask follow-up questions and regenerate
+feedback_schedule:
+  - layer: action
+    cadence: each run
+  - layer: parameter
+    cadence: weekly
+  - layer: system
+    cadence: monthly
+human_review_gates:
+  - gate: final-spec-approval
+    reviewer: product owner
+risks:
+  - vague inputs hide missing requirements
+next_actions:
+  - define required sections
+  - run reviewer check

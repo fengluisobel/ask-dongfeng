@@ -1,18 +1,26 @@
 # Ask DongFeng
 
-Ask DongFeng is a Hermes skill for turning vague goals, product ideas, workflows, or project systems into reviewable engineering-control loops.
+[![CI](https://github.com/fengluisobel/ask-dongfeng/actions/workflows/ci.yml/badge.svg)](https://github.com/fengluisobel/ask-dongfeng/actions/workflows/ci.yml)
 
-It is not a normal planning prompt. It asks:
+Ask DongFeng is a Hermes-first skill for turning vague goals, product ideas, workflows, or project systems into reviewable engineering-control loops.
+
+30-second pitch:
+
+- Normal planning says what to do.
+- Ask DongFeng says how to detect drift, when to correct it, and where a human must approve.
+- The output is a `control-artifact` you can use upstream of specs, implementation plans, code review, or workflow design.
+
+Core loop:
 
 ```text
-What is being controlled?
-How is reality observed?
-How is deviation detected?
-What corrective action runs when the system drifts?
-Where must a human approve before execution continues?
+vague goal
+  -> Ask DongFeng
+  -> control-artifact
+  -> validator + human review
+  -> spec / plan / code / workflow
 ```
 
-## What It Outputs
+## What It Produces
 
 Ask DongFeng produces a `control-artifact` with:
 
@@ -27,35 +35,33 @@ Ask DongFeng produces a `control-artifact` with:
 - `risks`
 - `next_actions`
 
-Use it before writing a spec, implementation plan, code, or review process when the risk is not "we need more tasks" but "the work may drift without being noticed."
+Use it when the real risk is not "we need more tasks," but "the work may drift without being noticed."
 
-## Install
+## Evaluate In 5 Minutes
 
-Clone the repo:
+1. Read the sample artifact: [examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
+2. Run the validator:
+
+   ```bash
+   python scripts/validate_artifact.py examples/sample-control-artifact.yaml
+   ```
+
+3. Read one example prompt below and decide whether this is the right upstream framework for your spec/plan workflow.
+
+## Quick Start
+
+Hermes is the primary target.
 
 ```bash
-git clone https://github.com/fengluisobel/ask-dongfeng.git
-cd ask-dongfeng
+git clone https://github.com/fengluisobel/ask-dongfeng.git && cd ask-dongfeng
+SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"; mkdir -p "$SKILL_HOME"; cp -a SKILL.md references scripts agents "$SKILL_HOME/"
+hermes chat --skills ask-dongfeng
 ```
 
-Install into the active Hermes local skill directory:
-
-```bash
-SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"
-mkdir -p "$SKILL_HOME"
-cp -a SKILL.md references scripts agents "$SKILL_HOME/"
-```
-
-Verify:
+Verify local install:
 
 ```bash
 hermes skills list --source local --enabled-only | grep ask-dongfeng
-```
-
-Run:
-
-```bash
-hermes chat --skills ask-dongfeng
 ```
 
 One-shot example:
@@ -70,7 +76,7 @@ Ask DongFeng is designed for Hermes first, but the repository follows the common
 
 ### Hermes
 
-This is the primary target. Install it under the local Hermes skill tree:
+Install under the local Hermes skill tree:
 
 ```bash
 SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"
@@ -81,7 +87,7 @@ hermes chat --skills ask-dongfeng
 
 ### Codex / OpenAI Skills
 
-OpenAI skills use `SKILL.md` instructions plus supporting resources, and are supported in Codex. To use this repo as a local Codex skill, copy the folder into your Codex skills directory:
+Install as a local Codex skill:
 
 ```bash
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
@@ -92,21 +98,21 @@ Then ask Codex to use `ask-dongfeng` for control-loop planning tasks.
 
 ### Claude / Claude Code
 
-Claude Agent Skills also use `SKILL.md`. For Claude Code, install as either a personal or project skill:
+Install as a personal Claude skill:
 
 ```bash
 mkdir -p "$HOME/.claude/skills"
 cp -a . "$HOME/.claude/skills/ask-dongfeng"
 ```
 
-Or for a project-local install:
+Or as a project-local skill:
 
 ```bash
 mkdir -p .claude/skills
 cp -a /path/to/ask-dongfeng .claude/skills/ask-dongfeng
 ```
 
-Claude can use the instructional parts directly. The Python validator is optional and only matters when the environment allows script execution.
+Claude can use the instructional parts directly. The Python validators are optional and only matter when the environment allows script execution.
 
 ## Example Prompts
 
@@ -152,17 +158,23 @@ The workflow can become an endless "needs more investigation" loop.
 Model this as a control loop. Focus on stopping rules, repeated-experiment detection, verdict gates, and system review.
 ```
 
-## Validate Artifacts
+## Validators
 
-Ask DongFeng includes a lightweight validator for saved control artifacts.
+Ask DongFeng includes two lightweight validators.
 
-Save the output to a Markdown or YAML file, then run:
+Validate a generated control artifact:
 
 ```bash
 python scripts/validate_artifact.py path/to/artifact.md
 ```
 
-The validator checks for missing core loop parts:
+Validate the skill package shape itself:
+
+```bash
+python scripts/validate_skill.py SKILL.md
+```
+
+`validate_artifact.py` checks for missing core loop parts:
 
 - `controlled_object`
 - `system_boundary`
@@ -177,25 +189,52 @@ The validator checks for missing core loop parts:
 
 It also warns when comparators lack `green/yellow/red`, controllers lack `trigger/action`, or feedback does not include action, parameter, and system layers.
 
-The validator is intentionally conservative. It checks completeness, not whether the strategy is correct.
+`validate_skill.py` checks for:
+
+- YAML frontmatter existence
+- required `name` and `description`
+- unexpected top-level frontmatter keys
+- referenced bundled files that do not exist
+
+Both validators are intentionally conservative. They check package and artifact completeness, not whether the strategy is good.
 
 ## Repo Layout
 
 ```text
 ask-dongfeng/
-├── SKILL.md
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── agents/
 │   └── openai.yaml
+├── examples/
+│   └── sample-control-artifact.yaml
 ├── references/
 │   ├── artifact-schema.md
 │   ├── control-framework.md
 │   ├── examples.md
 │   └── review-questions.md
-└── scripts/
-    └── validate_artifact.py
+├── scripts/
+│   ├── validate_artifact.py
+│   └── validate_skill.py
+├── LICENSE
+├── README.md
+└── SKILL.md
 ```
 
-## Publish to GitHub
+## Boundaries
+
+This repo is intentionally small.
+
+It does not include:
+
+- a backend
+- a SaaS product
+- a database
+- automatic code generation
+- broad workflow automation beyond the control-loop framing itself
+
+## Publish To GitHub
 
 From inside this standalone directory:
 
