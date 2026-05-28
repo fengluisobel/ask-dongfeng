@@ -34,7 +34,7 @@ Use it before writing a spec, implementation plan, code, or review process when 
 Clone the repo:
 
 ```bash
-git clone https://github.com/YOUR_ORG/ask-dongfeng.git
+git clone https://github.com/fengluisobel/ask-dongfeng.git
 cd ask-dongfeng
 ```
 
@@ -63,6 +63,50 @@ One-shot example:
 ```bash
 hermes chat --skills ask-dongfeng -q "Use Ask DongFeng to turn this goal into a control loop: build an open-source Hermes skill that turns fuzzy product ideas into reviewable MVP specs."
 ```
+
+## Compatibility
+
+Ask DongFeng is designed for Hermes first, but the repository follows the common `SKILL.md` package shape used by current agent-skill systems: a `SKILL.md` file plus optional `references/`, `scripts/`, and `agents/` resources.
+
+### Hermes
+
+This is the primary target. Install it under the local Hermes skill tree:
+
+```bash
+SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"
+mkdir -p "$SKILL_HOME"
+cp -a SKILL.md references scripts agents "$SKILL_HOME/"
+hermes chat --skills ask-dongfeng
+```
+
+### Codex / OpenAI Skills
+
+OpenAI skills use `SKILL.md` instructions plus supporting resources, and are supported in Codex. To use this repo as a local Codex skill, copy the folder into your Codex skills directory:
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -a . "${CODEX_HOME:-$HOME/.codex}/skills/ask-dongfeng"
+```
+
+Then ask Codex to use `ask-dongfeng` for control-loop planning tasks.
+
+### Claude / Claude Code
+
+Claude Agent Skills also use `SKILL.md`. For Claude Code, install as either a personal or project skill:
+
+```bash
+mkdir -p "$HOME/.claude/skills"
+cp -a . "$HOME/.claude/skills/ask-dongfeng"
+```
+
+Or for a project-local install:
+
+```bash
+mkdir -p .claude/skills
+cp -a /path/to/ask-dongfeng .claude/skills/ask-dongfeng
+```
+
+Claude can use the instructional parts directly. The Python validator is optional and only matters when the environment allows script execution.
 
 ## Example Prompts
 
@@ -165,7 +209,7 @@ gh repo create ask-dongfeng --public --source=. --remote=origin --push
 If you do not use GitHub CLI, create an empty GitHub repo first, then run:
 
 ```bash
-git remote add origin https://github.com/YOUR_ORG/ask-dongfeng.git
+git remote add origin https://github.com/fengluisobel/ask-dongfeng.git
 git branch -M main
 git push -u origin main
 ```
