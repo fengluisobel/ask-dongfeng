@@ -2,29 +2,29 @@
 
 [![CI](https://github.com/fengluisobel/ask-dongfeng/actions/workflows/ci.yml/badge.svg)](https://github.com/fengluisobel/ask-dongfeng/actions/workflows/ci.yml)
 
-English | [简体中文](./README.zh-CN.md)
+[English](./README.md) | 简体中文
 
-Ask DongFeng is a Hermes-first skill for turning vague goals, product ideas, workflows, or project systems into reviewable engineering-control loops.
+Ask DongFeng 是一个以 Hermes 为主目标的 skill，用来把模糊目标、产品想法、工作流或项目系统，变成可审查的工程控制闭环。
 
-30-second pitch:
+30 秒说明：
 
-- Normal planning says what to do.
-- Ask DongFeng says how to detect drift, when to correct it, and where a human must approve.
-- The output is a `control-artifact` you can use upstream of specs, implementation plans, code review, or workflow design.
+- 普通 planning 负责说“要做什么”。
+- Ask DongFeng 负责说“怎么发现跑偏、什么时候纠偏、哪里必须让人来拍板”。
+- 它的核心输出是 `control-artifact`，适合放在 spec、implementation plan、code review、workflow design 之前。
 
-Core loop:
+核心闭环：
 
 ```text
-vague goal
+模糊目标
   -> Ask DongFeng
   -> control-artifact
-  -> validator + human review
+  -> validator + 人工审查
   -> spec / plan / code / workflow
 ```
 
-## What It Produces
+## 它输出什么
 
-Ask DongFeng produces a `control-artifact` with:
+Ask DongFeng 输出一个 `control-artifact`，通常包含：
 
 - `controlled_object`
 - `system_boundary`
@@ -37,22 +37,22 @@ Ask DongFeng produces a `control-artifact` with:
 - `risks`
 - `next_actions`
 
-Use it when the real risk is not "we need more tasks," but "the work may drift without being noticed."
+适用场景不是“我需要更多任务列表”，而是“这件事如果没有观察、比较、纠偏，很容易悄悄跑偏”。
 
-## Evaluate In 5 Minutes
+## 5 分钟快速评估
 
-1. Read the sample artifact: [examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
-2. Run the validator:
+1. 先看样例：[examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
+2. 运行校验器：
 
    ```bash
    python scripts/validate_artifact.py examples/sample-control-artifact.yaml
    ```
 
-3. Read one example prompt below and decide whether this is the right upstream framework for your spec/plan workflow.
+3. 看下面任意一个 prompt，判断它是否适合做你现有 spec / plan 工作流的上游控制框架。
 
-## Quick Start
+## 快速开始
 
-Hermes is the primary target.
+Hermes 是主目标平台。
 
 ```bash
 git clone https://github.com/fengluisobel/ask-dongfeng.git && cd ask-dongfeng
@@ -60,25 +60,25 @@ SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfe
 hermes chat --skills ask-dongfeng
 ```
 
-Verify local install:
+验证安装：
 
 ```bash
 hermes skills list --source local --enabled-only | grep ask-dongfeng
 ```
 
-One-shot example:
+一次性调用示例：
 
 ```bash
 hermes chat --skills ask-dongfeng -q "Use Ask DongFeng to turn this goal into a control loop: build an open-source Hermes skill that turns fuzzy product ideas into reviewable MVP specs."
 ```
 
-## Compatibility
+## 兼容性
 
-Ask DongFeng is designed for Hermes first, but the repository follows the common `SKILL.md` package shape used by current agent-skill systems: a `SKILL.md` file plus optional `references/`, `scripts/`, and `agents/` resources.
+这个仓库遵循常见的 `SKILL.md + references/ + scripts/ + agents/` 结构，因此不只可以给 Hermes 用。
 
 ### Hermes
 
-Install under the local Hermes skill tree:
+安装到本地 Hermes skill 目录：
 
 ```bash
 SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"
@@ -89,36 +89,36 @@ hermes chat --skills ask-dongfeng
 
 ### Codex / OpenAI Skills
 
-Install as a local Codex skill:
+作为本地 Codex skill 安装：
 
 ```bash
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
 cp -a . "${CODEX_HOME:-$HOME/.codex}/skills/ask-dongfeng"
 ```
 
-Then ask Codex to use `ask-dongfeng` for control-loop planning tasks.
+然后让 Codex 使用 `ask-dongfeng` 做 control-loop planning。
 
 ### Claude / Claude Code
 
-Install as a personal Claude skill:
+作为个人 Claude skill 安装：
 
 ```bash
 mkdir -p "$HOME/.claude/skills"
 cp -a . "$HOME/.claude/skills/ask-dongfeng"
 ```
 
-Or as a project-local skill:
+或者作为项目级 skill：
 
 ```bash
 mkdir -p .claude/skills
 cp -a /path/to/ask-dongfeng .claude/skills/ask-dongfeng
 ```
 
-Claude can use the instructional parts directly. The Python validators are optional and only matter when the environment allows script execution.
+Claude 可以直接使用说明部分；Python 校验脚本属于可选项，取决于运行环境是否允许执行脚本。
 
-## Example Prompts
+## 示例 Prompt
 
-### 1. Fuzzy Product Idea to MVP Spec
+### 1. 模糊产品想法 -> MVP Spec
 
 ```text
 Use Ask DongFeng to turn this goal into a control loop:
@@ -132,7 +132,7 @@ Constraints:
 Output a concise YAML control-artifact with controlled_object, system_boundary, variables, sensors, comparators, controllers, feedback_schedule, human_review_gates, risks, and next_actions.
 ```
 
-### 2. Superpowers-Style Writing Plans
+### 2. superpowers 风格 writing-plans
 
 ```text
 Use Ask DongFeng to review a superpowers-style writing-plans workflow.
@@ -146,7 +146,7 @@ It can produce good plans, but it may not detect when execution drifts from the 
 Output a control-artifact and explain what Ask DongFeng adds beyond ordinary planning.
 ```
 
-### 3. Spike / Sisyphus Loop Control
+### 3. spike / 西西弗斯循环控制
 
 ```text
 Use Ask DongFeng to control a spike workflow.
@@ -160,47 +160,51 @@ The workflow can become an endless "needs more investigation" loop.
 Model this as a control loop. Focus on stopping rules, repeated-experiment detection, verdict gates, and system review.
 ```
 
-## Validators
+## 校验器
 
-Ask DongFeng includes two lightweight validators.
+仓库里有两个轻量校验器。
 
-Validate a generated control artifact:
+校验生成出的 control artifact：
 
 ```bash
 python scripts/validate_artifact.py path/to/artifact.md
 ```
 
-Validate the skill package shape itself:
+校验 skill 包结构本身：
 
 ```bash
 python scripts/validate_skill.py SKILL.md
 ```
 
-`validate_artifact.py` checks for missing core loop parts:
+`validate_artifact.py` 会检查：
 
-- `controlled_object`
-- `system_boundary`
-- `variables`
-- `sensors`
-- `comparators`
-- `controllers`
-- `feedback_schedule`
-- `human_review_gates`
-- `risks`
-- `next_actions`
+- 是否缺 `controlled_object`
+- 是否缺 `system_boundary`
+- 是否缺 `variables`
+- 是否缺 `sensors`
+- 是否缺 `comparators`
+- 是否缺 `controllers`
+- 是否缺 `feedback_schedule`
+- 是否缺 `human_review_gates`
+- 是否缺 `risks`
+- 是否缺 `next_actions`
 
-It also warns when comparators lack `green/yellow/red`, controllers lack `trigger/action`, or feedback does not include action, parameter, and system layers.
+它还会提示：
 
-`validate_skill.py` checks for:
+- comparator 是否缺 `green/yellow/red`
+- controller 是否缺 `trigger/action`
+- feedback 是否缺 `action / parameter / system` 三层
 
-- YAML frontmatter existence
-- required `name` and `description`
-- unexpected top-level frontmatter keys
-- referenced bundled files that do not exist
+`validate_skill.py` 会检查：
 
-Both validators are intentionally conservative. They check package and artifact completeness, not whether the strategy is good.
+- YAML frontmatter 是否存在
+- 是否有必需的 `name` 和 `description`
+- 是否有不该出现的顶层 key
+- `SKILL.md` 里引用的 bundled files 是否真实存在
 
-## Repo Layout
+这两个脚本都只做保守的结构检查，不负责判断“策略是否高明”。
+
+## 仓库结构
 
 ```text
 ask-dongfeng/
@@ -221,39 +225,21 @@ ask-dongfeng/
 │   └── validate_skill.py
 ├── LICENSE
 ├── README.md
+├── README.zh-CN.md
 └── SKILL.md
 ```
 
-## Boundaries
+## 边界
 
-This repo is intentionally small.
+这个仓库有意保持轻量。
 
-It does not include:
+不包含：
 
-- a backend
-- a SaaS product
-- a database
+- backend
+- SaaS 产品
+- database
 - automatic code generation
-- broad workflow automation beyond the control-loop framing itself
-
-## Publish To GitHub
-
-From inside this standalone directory:
-
-```bash
-git init
-git add .
-git commit -m "Initial Ask DongFeng skill"
-gh repo create ask-dongfeng --public --source=. --remote=origin --push
-```
-
-If you do not use GitHub CLI, create an empty GitHub repo first, then run:
-
-```bash
-git remote add origin https://github.com/fengluisobel/ask-dongfeng.git
-git branch -M main
-git push -u origin main
-```
+- 超出 control-loop framing 本身的大规模 workflow automation
 
 ## License
 
