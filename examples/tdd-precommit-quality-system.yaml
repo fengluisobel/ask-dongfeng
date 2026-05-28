@@ -1,0 +1,74 @@
+type: control-artifact
+version: 0.1
+goal: "Keep agent coding quality stable across TDD execution and pre-commit review"
+controlled_object: "The coding-quality loop that combines RED-GREEN-REFACTOR with pre-commit verification"
+system_boundary:
+  in_scope:
+    - task-level TDD behavior
+    - pre-commit review quality checks
+    - regression prevention before merge
+  out_of_scope:
+    - production monitoring after deployment
+    - organization-wide process policy
+    - performance benchmarking unrelated to the current change
+variables:
+  controlled:
+    - TDD discipline rate
+    - regression count
+    - reviewer verdict quality
+    - fix-loop containment
+  observed:
+    - test-first evidence count
+    - failing-to-passing sequence presence
+    - repeated review finding count
+    - unresolved blocking issue count
+  control:
+    - reviewer prompt constraints
+    - commit blocking rules
+    - diff size limits
+  disturbance:
+    - time pressure
+    - oversized diffs
+    - flaky tests
+  lagging:
+    - post-merge bug rate
+    - rollback count
+sensors:
+  - name: tdd-cycle-check
+    source: task notes or commit narrative
+    cadence: each task
+  - name: review-verdict-check
+    source: pre-commit review output
+    cadence: each commit
+  - name: regression-check
+    source: test suite
+    cadence: each commit
+comparators:
+  - name: quality-state
+    green: tests clearly fail first and pass later, with no unresolved blocking review findings
+    yellow: one quality signal is weak, but the change is recoverable with another short cycle
+    red: regressions remain, blocking findings are unresolved, or no test-first evidence exists
+controllers:
+  - name: block-unsafe-commit
+    trigger: red
+    action: require another RED-GREEN-REFACTOR cycle before commit approval
+  - name: tighten-review-loop
+    trigger: repeated_yellow
+    action: shrink diff size, sharpen reviewer prompts, and rerun verification
+feedback_schedule:
+  - layer: action
+    cadence: each task and commit
+  - layer: parameter
+    cadence: weekly
+  - layer: system
+    cadence: monthly
+human_review_gates:
+  - gate: merge-approval
+    reviewer: code reviewer or maintainer
+risks:
+  - teams may claim TDD without preserving evidence of the red-to-green transition
+  - repeated yellow outcomes can normalize weak review discipline
+next_actions:
+  - define what counts as acceptable test-first evidence
+  - sample ten recent commits and classify them green, yellow, or red
+  - review whether diff-size limits need tightening

@@ -1,0 +1,74 @@
+type: control-artifact
+version: 0.1
+goal: "Keep a writing-plans workflow executable, reviewable, and resistant to vague drift"
+controlled_object: "One writing-plans run from requirement intake to a saved implementation plan"
+system_boundary:
+  in_scope:
+    - plan decomposition into concrete tasks
+    - exact file and command specification
+    - review before execution handoff
+  out_of_scope:
+    - direct code generation
+    - project management beyond one plan cycle
+    - product strategy outside the requested feature
+variables:
+  controlled:
+    - task granularity
+    - file-path precision
+    - test-command executability
+    - code-example completeness
+  observed:
+    - vague-word count
+    - oversized task count
+    - missing test command count
+    - missing file path count
+  control:
+    - task splitting rules
+    - output formatting constraints
+    - follow-up clarification questions
+  disturbance:
+    - under-specified feature requests
+    - hidden dependencies
+    - pressure to over-pack one plan
+  lagging:
+    - execution rework rate
+    - plan-to-implementation mismatch count
+sensors:
+  - name: vague-word-scan
+    source: generated plan text
+    cadence: each run
+  - name: task-size-check
+    source: task list
+    cadence: each run
+  - name: command-presence-check
+    source: generated plan sections
+    cadence: each run
+comparators:
+  - name: plan-readiness
+    green: every task includes exact files, a concrete action, and a test or verification command
+    yellow: one or two tasks remain vague or oversized but the plan is recoverable
+    red: multiple tasks are ambiguous, unbounded, or missing execution checks
+controllers:
+  - name: tighten-plan
+    trigger: yellow_or_red
+    action: split oversized tasks, replace vague verbs with file-specific steps, and add missing verification commands
+  - name: clarify-scope
+    trigger: repeated_missing_context
+    action: ask follow-up questions before producing another full plan
+feedback_schedule:
+  - layer: action
+    cadence: each run
+  - layer: parameter
+    cadence: weekly
+  - layer: system
+    cadence: monthly
+human_review_gates:
+  - gate: plan-approval
+    reviewer: engineer or tech lead
+risks:
+  - plans can look detailed while still hiding execution gaps
+  - reviewers may skip checking commands if formatting looks polished
+next_actions:
+  - define the non-negotiable sections every plan must contain
+  - test the workflow on one bug fix and one feature request
+  - review whether yellow cases are being corrected fast enough

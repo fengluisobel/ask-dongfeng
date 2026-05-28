@@ -54,6 +54,13 @@ If you want the fastest "before vs after" view, read:
 
 - [examples/demo-before-after.md](./examples/demo-before-after.md)
 
+If you want ready-made example artifacts, start with:
+
+- [examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
+- [examples/superpowers-writing-plans.yaml](./examples/superpowers-writing-plans.yaml)
+- [examples/spike-sisyphus-loop.yaml](./examples/spike-sisyphus-loop.yaml)
+- [examples/tdd-precommit-quality-system.yaml](./examples/tdd-precommit-quality-system.yaml)
+
 ## Quick Start
 
 Hermes is the primary target.
@@ -136,6 +143,10 @@ Constraints:
 Output a concise YAML control-artifact with controlled_object, system_boundary, variables, sensors, comparators, controllers, feedback_schedule, human_review_gates, risks, and next_actions.
 ```
 
+Validated example artifact:
+
+- [examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
+
 ### 2. Superpowers-Style Writing Plans
 
 ```text
@@ -150,6 +161,10 @@ It can produce good plans, but it may not detect when execution drifts from the 
 Output a control-artifact and explain what Ask DongFeng adds beyond ordinary planning.
 ```
 
+Validated example artifact:
+
+- [examples/superpowers-writing-plans.yaml](./examples/superpowers-writing-plans.yaml)
+
 ### 3. Spike / Sisyphus Loop Control
 
 ```text
@@ -163,6 +178,10 @@ The workflow can become an endless "needs more investigation" loop.
 
 Model this as a control loop. Focus on stopping rules, repeated-experiment detection, verdict gates, and system review.
 ```
+
+Validated example artifact:
+
+- [examples/spike-sisyphus-loop.yaml](./examples/spike-sisyphus-loop.yaml)
 
 ## Before / After Demo
 
@@ -234,7 +253,10 @@ ask-dongfeng/
 |   `-- openai.yaml
 |-- examples/
 |   |-- demo-before-after.md
-|   `-- sample-control-artifact.yaml
+|   |-- sample-control-artifact.yaml
+|   |-- spike-sisyphus-loop.yaml
+|   |-- superpowers-writing-plans.yaml
+|   `-- tdd-precommit-quality-system.yaml
 |-- references/
 |   |-- artifact-schema.md
 |   |-- control-framework.md

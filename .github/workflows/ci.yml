@@ -13,4 +13,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: python scripts/validate_skill.py SKILL.md
-      - run: python scripts/validate_artifact.py examples/sample-control-artifact.yaml
+      - run: |
+          for file in examples/*.yaml; do
+            python scripts/validate_artifact.py "$file"
+          done

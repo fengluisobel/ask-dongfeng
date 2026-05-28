@@ -1,0 +1,74 @@
+type: control-artifact
+version: 0.1
+goal: "Prevent disposable research spikes from becoming endless investigation loops"
+controlled_object: "One spike cycle from falsifiable hypothesis to explicit verdict"
+system_boundary:
+  in_scope:
+    - hypothesis definition
+    - evidence collection
+    - verdict and recommendation
+  out_of_scope:
+    - production implementation
+    - open-ended exploration without a decision deadline
+    - roadmap prioritization outside the spike
+variables:
+  controlled:
+    - verdict clarity
+    - time containment
+    - assumption coverage
+    - learning density
+  observed:
+    - elapsed time versus timebox
+    - duplicate-question count
+    - unresolved assumption count
+    - verdict absence count
+  control:
+    - timebox rules
+    - verdict format constraints
+    - escalation thresholds
+  disturbance:
+    - ambiguous goals
+    - new tangential questions discovered during research
+    - fear of shipping with uncertainty
+  lagging:
+    - repeated spike rate
+    - decision reversal rate
+sensors:
+  - name: timebox-check
+    source: spike log
+    cadence: each checkpoint
+  - name: verdict-audit
+    source: spike summary
+    cadence: each run
+  - name: duplicate-spike-check
+    source: spike backlog
+    cadence: weekly
+comparators:
+  - name: spike-health
+    green: a timeboxed spike ends with a binary or bounded verdict backed by evidence
+    yellow: evidence is partial or the verdict is weak, but the spike can finish within the timebox
+    red: the spike exceeds the timebox, repeats prior work, or ends without a decision
+controllers:
+  - name: force-verdict
+    trigger: yellow_or_red
+    action: require an explicit go, no-go, or next-test verdict and list remaining uncertainty separately
+  - name: terminate-repetition
+    trigger: repeated_spike_detected
+    action: block another spike until a human reviewer decides whether the question is still worth exploring
+feedback_schedule:
+  - layer: action
+    cadence: each checkpoint
+  - layer: parameter
+    cadence: every 3 spikes
+  - layer: system
+    cadence: monthly
+human_review_gates:
+  - gate: verdict-approval
+    reviewer: project owner
+risks:
+  - exploratory work can look productive while delaying a needed decision
+  - teams may relabel repeated spikes as new work to bypass stopping rules
+next_actions:
+  - define default spike timeboxes by question type
+  - create a standard verdict template
+  - review the last three spikes for repetition patterns
