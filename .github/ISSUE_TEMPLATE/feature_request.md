@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest a practical improvement to Ask DongFeng
 title: "[feature] "
-labels: enhancement
+labels: enhancement, needs-triage
 assignees: ""
 ---
 

@@ -1,0 +1,63 @@
+name: Use case feedback
+description: Share a real prompt/output so Ask DongFeng can be improved
+title: "[use-case] "
+labels: ["feedback", "use-case", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when Ask DongFeng was useful, confusing, too generic, too long, or failed to produce a reviewable control artifact.
+
+        The most useful feedback includes the exact prompt and a short output excerpt.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Hermes
+        - Codex
+        - Claude / Claude Code
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Exact prompt
+      description: Paste the prompt or command you used.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What happened?
+      description: What worked, what drifted, or what was missing?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What would better output look like?
+      description: A short sketch is enough. If possible, name the missing sensor, comparator, controller, gate, or example.
+    validations:
+      required: false
+  - type: textarea
+    id: output_excerpt
+    attributes:
+      label: Output excerpt
+      description: Paste only the relevant excerpt. Do not include secrets.
+      render: text
+    validations:
+      required: false
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact area
+      options:
+        - label: Install or first-run experience
+        - label: Prompt quality
+        - label: Control-artifact structure
+        - label: Validator behavior
+        - label: Example coverage
+        - label: Documentation clarity

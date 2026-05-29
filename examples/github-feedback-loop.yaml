@@ -1,0 +1,103 @@
+type: control-artifact
+version: 0.2
+goal: "Help GitHub users understand, install, try, and file actionable feedback for Ask DongFeng"
+controlled_object: "The adoption-to-feedback pipeline from repo landing to maintainer-actionable issue"
+system_boundary:
+  in_scope:
+    - README clarity and quick-start path
+    - first-run experience on Hermes and compatible agents
+    - GitHub Issues as the feedback channel
+    - maintainer triage and patch release cadence
+  out_of_scope:
+    - SaaS analytics
+    - paid acquisition
+    - formal community management
+    - broad roadmap management outside this skill
+variables:
+  controlled:
+    - time_to_first_action
+    - feedback_actionability
+    - install_success_signal
+    - time_to_resolution
+  observed:
+    - new issues per week
+    - issue completeness
+    - repeated issue topics
+    - install-failure reports
+  control:
+    - README quick-start wording
+    - issue template fields
+    - example artifact coverage
+    - patch release cadence
+  disturbance:
+    - user OS and shell differences
+    - Hermes or agent version changes
+    - unclear user prompts
+    - low GitHub traffic
+  lagging:
+    - returning contributors
+    - repeat issue reporters
+    - stars and forks
+sensors:
+  - name: quickstart-self-test
+    source: maintainer runs install plus one example prompt on WSL
+    cadence: weekly or before release
+  - name: issue-actionability-score
+    source: new GitHub issues
+    cadence: per issue
+  - name: repeated-topic-scan
+    source: open issues and comments
+    cadence: weekly
+  - name: install-failure-ratio
+    source: issues labeled install-failure
+    cadence: weekly
+comparators:
+  - name: first-run-health
+    green: first command succeeds without workaround
+    yellow: first command succeeds after README clarification
+    red: first command fails or skill is not discovered
+  - name: feedback-quality
+    green: issue includes platform, exact prompt, actual behavior, and expected behavior
+    yellow: issue has enough detail after one clarification
+    red: issue is not actionable after clarification
+  - name: repeated-topic-pressure
+    green: no repeated issue topic in the last 10 issues
+    yellow: two issues report the same friction
+    red: three or more issues report the same friction
+controllers:
+  - name: clarify-quickstart
+    trigger: first-run-health yellow_or_red
+    action: patch README quick-start and rerun Hermes self-test
+  - name: improve-feedback-form
+    trigger: feedback-quality yellow_or_red
+    action: tighten issue template fields and add an example of actionable feedback
+  - name: promote-repeated-topic
+    trigger: repeated-topic-pressure yellow_or_red
+    action: convert repeated feedback into a tracked fix, example artifact, validator rule, or README patch
+  - name: cut-patch-release
+    trigger: a fix changes install, validator, or SKILL.md behavior
+    action: run validation, tag a patch release, and summarize the user-facing change
+feedback_schedule:
+  - layer: action
+    cadence: within 48 hours of each new issue
+  - layer: parameter
+    cadence: weekly
+  - layer: system
+    cadence: monthly
+human_review_gates:
+  - gate: before-release
+    reviewer: maintainer
+    check: run validators, run one Hermes prompt, review open red issues
+  - gate: before-wontfix
+    reviewer: maintainer
+    check: explain the boundary decision and link to the project scope
+risks:
+  - low traffic can starve the feedback loop
+  - feedback is biased toward users who had problems
+  - issue triage can become the maintainer bottleneck
+  - broad feature requests can pull the skill away from its control-loop core
+next_actions:
+  - add a use-case feedback issue form
+  - label incoming issues by install, first-run, validator, example, or scope
+  - convert repeated topics into examples or validator checks before adding new features
+  - publish patch releases only after local validators and one Hermes self-test pass

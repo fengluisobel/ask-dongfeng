@@ -57,9 +57,14 @@ If you want the fastest "before vs after" view, read:
 If you want ready-made example artifacts, start with:
 
 - [examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
+- [examples/github-feedback-loop.yaml](./examples/github-feedback-loop.yaml)
 - [examples/superpowers-writing-plans.yaml](./examples/superpowers-writing-plans.yaml)
 - [examples/spike-sisyphus-loop.yaml](./examples/spike-sisyphus-loop.yaml)
 - [examples/tdd-precommit-quality-system.yaml](./examples/tdd-precommit-quality-system.yaml)
+
+If you want evidence from a real Hermes run, read:
+
+- [examples/hermes-run-transcripts.md](./examples/hermes-run-transcripts.md)
 
 ## Quick Start
 
@@ -183,6 +188,28 @@ Validated example artifact:
 
 - [examples/spike-sisyphus-loop.yaml](./examples/spike-sisyphus-loop.yaml)
 
+### 4. GitHub Feedback Loop
+
+```text
+Use Ask DongFeng to turn this goal into a control loop:
+GitHub users should quickly understand Ask DongFeng, install it, try it, and file actionable feedback that can drive fast iteration.
+
+Constraints:
+- keep the project small
+- avoid SaaS
+- avoid heavy process
+
+Output a concise YAML control-artifact.
+```
+
+Validated example artifact:
+
+- [examples/github-feedback-loop.yaml](./examples/github-feedback-loop.yaml)
+
+Real Hermes transcript:
+
+- [examples/hermes-run-transcripts.md](./examples/hermes-run-transcripts.md)
+
 ## Before / After Demo
 
 This repo includes a compact comparison between:
@@ -242,17 +269,44 @@ It also warns when comparators lack `green/yellow/red`, controllers lack `trigge
 
 Both validators are intentionally conservative. They check package and artifact completeness, not whether the strategy is good.
 
+## Feedback And Iteration
+
+Ask DongFeng uses GitHub Issues as the feedback loop.
+
+Use the issue templates for:
+
+- bugs in installation, validators, or package shape
+- practical feature requests with a concrete use case
+- use-case feedback with an exact prompt and output excerpt
+
+Maintainer loop:
+
+- triage new issues within 48 hours when possible
+- label by failure surface: install, first-run, validator, example, documentation, or scope
+- convert repeated topics into an example artifact, validator rule, README patch, or SKILL.md change
+- cut a patch release only after validators and at least one Hermes self-test pass
+
+The control artifact for this loop is:
+
+- [examples/github-feedback-loop.yaml](./examples/github-feedback-loop.yaml)
+
 ## Repo Layout
 
 ```text
 ask-dongfeng/
 |-- .github/
+|   |-- ISSUE_TEMPLATE/
+|   |   |-- bug_report.md
+|   |   |-- feature_request.md
+|   |   `-- use_case_feedback.yml
 |   `-- workflows/
 |       `-- ci.yml
 |-- agents/
 |   `-- openai.yaml
 |-- examples/
 |   |-- demo-before-after.md
+|   |-- github-feedback-loop.yaml
+|   |-- hermes-run-transcripts.md
 |   |-- sample-control-artifact.yaml
 |   |-- spike-sisyphus-loop.yaml
 |   |-- superpowers-writing-plans.yaml

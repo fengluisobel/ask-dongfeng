@@ -2,7 +2,7 @@
 name: Bug report
 about: Report a validator, installation, or skill-package bug
 title: "[bug] "
-labels: bug
+labels: bug, needs-triage
 assignees: ""
 ---
 
