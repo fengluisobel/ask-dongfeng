@@ -1,4 +1,4 @@
 interface:
   display_name: "Ask DongFeng"
-  short_description: "Turn vague goals into control loops"
-  default_prompt: "Use $ask-dongfeng to turn this vague goal into a reviewable control-loop artifact."
+  short_description: "Turn goals into executable control packets"
+  default_prompt: "Use $ask-dongfeng to choose the right operating mode and turn this goal into a DongFeng Packet with a control artifact, execution contract, review gates, and next action."

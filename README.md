@@ -4,27 +4,48 @@
 
 English | [Chinese README](./README.zh-CN.md)
 
-Ask DongFeng is a Hermes-first skill for turning vague goals, product ideas, workflows, or project systems into reviewable engineering-control loops.
+Ask DongFeng is a Hermes-first framework skill for turning vague goals, product ideas, plans, spikes, or review decisions into executable control packets.
 
 30-second pitch:
 
 - Normal planning says what to do.
-- Ask DongFeng says how to detect drift, when to correct it, and where a human must approve.
-- The output is a `control-artifact` you can use upstream of specs, implementation plans, code review, or workflow design.
+- Ask DongFeng decides the right operating mode, then defines how to detect drift, when to correct it, and where a human must approve.
+- The output is a `DongFeng Packet`: mode, boundary, decision, `control-artifact`, execution contract, review gates, and next prompt/action.
 
 Core loop:
 
 ```text
 vague goal
   -> Ask DongFeng
-  -> control-artifact
+  -> DongFeng Packet
   -> validator + human review
   -> spec / plan / code / workflow
 ```
 
+## What It Replaces Or Wraps
+
+Ask DongFeng is meant to replace or wrap the upstream parts of spec, planning, superpowers-style writing-plans, spike, and review-gate workflows.
+
+| Existing workflow need | Ask DongFeng mode | Output |
+|---|---|---|
+| Fuzzy idea -> reviewable spec | `intent-to-spec` | MVP/spec contract plus control artifact |
+| Implementation plan needs guardrails | `plan-guard` | drift sensors, freshness checks, review gates |
+| Experiment may become endless research | `spike-control` | time/depth budgets, repetition check, verdict gate |
+| Need a go/no-go decision | `review-gate` | green/yellow/red decision and required fixes |
+| GitHub/user feedback needs fast iteration | `iteration-loop` | intake, triage, repeated-topic controller, release gate |
+
 ## What It Produces
 
-Ask DongFeng produces a `control-artifact` with:
+Ask DongFeng produces a `DongFeng Packet` with:
+
+- selected operating mode
+- boundary and decision
+- `control-artifact`
+- execution contract
+- review gates
+- exact next prompt or action
+
+The embedded `control-artifact` includes:
 
 - `controlled_object`
 - `system_boundary`
@@ -53,6 +74,7 @@ Use it when the real risk is not "we need more tasks," but "the work may drift w
 If you want the fastest "before vs after" view, read:
 
 - [examples/demo-before-after.md](./examples/demo-before-after.md)
+- [examples/dongfeng-packet.md](./examples/dongfeng-packet.md)
 
 If you want ready-made example artifacts, start with:
 
@@ -322,6 +344,7 @@ ask-dongfeng/
 |   `-- openai.yaml
 |-- examples/
 |   |-- demo-before-after.md
+|   |-- dongfeng-packet.md
 |   |-- github-feedback-loop.yaml
 |   |-- hermes-run-transcripts.md
 |   |-- sample-control-artifact.yaml
@@ -332,6 +355,7 @@ ask-dongfeng/
 |   |-- artifact-schema.md
 |   |-- control-framework.md
 |   |-- examples.md
+|   |-- operating-modes.md
 |   `-- review-questions.md
 |-- scripts/
 |   |-- install_hermes.sh

@@ -4,27 +4,48 @@
 
 [English](./README.md) | 简体中文
 
-Ask DongFeng 是一个 Hermes-first skill，用来把模糊目标、产品想法、工作流或项目系统，转成可审查的工程控制闭环。
+Ask DongFeng 是一个 Hermes-first 框架式 skill，用来把模糊目标、产品想法、计划、spike 或审查决策，转成可执行的控制包。
 
 30 秒说明：
 
 - 普通计划回答“下一步做什么”。
-- Ask DongFeng 回答“如何观察跑偏、什么时候纠偏、哪里必须人工确认”。
-- 输出是一个 `control-artifact`，适合放在 spec、implementation plan、code review 或 workflow design 的上游。
+- Ask DongFeng 先选择合适的 operating mode，再回答“如何观察跑偏、什么时候纠偏、哪里必须人工确认”。
+- 输出是一个 `DongFeng Packet`：mode、boundary、decision、`control-artifact`、execution contract、review gates 和下一步 prompt/action。
 
 核心闭环：
 
 ```text
 模糊目标
   -> Ask DongFeng
-  -> control-artifact
+  -> DongFeng Packet
   -> validator + 人工审查
   -> spec / plan / code / workflow
 ```
 
+## 它替代或包住什么
+
+Ask DongFeng 的目标是替代或包住 spec、planning、superpowers-style writing-plans、spike、review-gate 这些上游工作流。
+
+| 现有工作流需求 | Ask DongFeng mode | 输出 |
+|---|---|---|
+| 模糊想法 -> 可审查 spec | `intent-to-spec` | MVP/spec contract + control artifact |
+| implementation plan 需要防跑偏 | `plan-guard` | drift sensors、freshness checks、review gates |
+| 实验可能变成无限研究 | `spike-control` | time/depth budget、repetition check、verdict gate |
+| 需要 go/no-go 决策 | `review-gate` | green/yellow/red decision + required fixes |
+| GitHub/user feedback 要快速迭代 | `iteration-loop` | intake、triage、repeated-topic controller、release gate |
+
 ## 输出什么
 
-Ask DongFeng 输出一个 `control-artifact`，通常包含：
+Ask DongFeng 输出一个 `DongFeng Packet`，通常包含：
+
+- selected operating mode
+- boundary and decision
+- `control-artifact`
+- execution contract
+- review gates
+- exact next prompt or action
+
+其中内嵌的 `control-artifact` 通常包含：
 
 - `controlled_object`
 - `system_boundary`
@@ -53,6 +74,7 @@ Ask DongFeng 输出一个 `control-artifact`，通常包含：
 最快的 before/after 对比：
 
 - [examples/demo-before-after.md](./examples/demo-before-after.md)
+- [examples/dongfeng-packet.md](./examples/dongfeng-packet.md)
 
 可验证的样例 artifact：
 
@@ -296,6 +318,7 @@ ask-dongfeng/
 |   `-- openai.yaml
 |-- examples/
 |   |-- demo-before-after.md
+|   |-- dongfeng-packet.md
 |   |-- github-feedback-loop.yaml
 |   |-- hermes-run-transcripts.md
 |   |-- sample-control-artifact.yaml
@@ -306,6 +329,7 @@ ask-dongfeng/
 |   |-- artifact-schema.md
 |   |-- control-framework.md
 |   |-- examples.md
+|   |-- operating-modes.md
 |   `-- review-questions.md
 |-- scripts/
 |   |-- install_hermes.sh

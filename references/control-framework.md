@@ -70,11 +70,13 @@ Human review is a control input, not a decoration. Put gates before:
 - deleting or rewriting important artifacts
 - declaring success based on weak evidence
 
-## Differentiation From Spec Writing
+## Differentiation From Spec / Planning Workflows
 
 A normal spec describes what should be built. Ask DongFeng describes how the work stays aligned after reality pushes back.
 
-Therefore, a strong AIToBe output includes:
+Ask DongFeng should not merely add control-theory vocabulary on top of a spec or plan. It should produce a usable operating packet: selected mode, boundary, decision, control artifact, execution contract, and next prompt/action.
+
+Therefore, a strong Ask DongFeng output includes:
 
 - requirements or target state
 - observation method
@@ -82,5 +84,6 @@ Therefore, a strong AIToBe output includes:
 - correction action
 - review cadence
 - residual risk
+- exact handoff instruction
 
 Without feedback and correction, it is only a spec, not a control loop.

@@ -110,9 +110,36 @@ Related validated example:
 
 - [spike-sisyphus-loop.yaml](./spike-sisyphus-loop.yaml)
 
+## Run 4: Framework Replacement / DongFeng Packet
+
+Command:
+
+```bash
+hermes chat --skills ask-dongfeng -Q -q 'Use Ask DongFeng to replace a superpowers-style planning workflow for this goal: build a Hermes skill that turns fuzzy product ideas into reviewable MVP specs. Output a concise DongFeng Packet, not only a control artifact.'
+```
+
+Important output excerpt:
+
+```text
+# DongFeng Packet: Product Idea -> MVP Spec Skill
+
+## 1. Mode: `intent-to-spec`
+
+## 3. Decision: PROCEED
+
+## 5. Execution Contract (intent-to-spec)
+```
+
+What this run proves:
+
+- Ask DongFeng now selects an operating mode before generating the artifact.
+- The output is not only a control artifact; it includes a decision, execution contract, review gate, and next actions.
+- This is closer to a framework workflow replacement for spec/planning tools than the earlier control-loop-only behavior.
+
 ## What These Runs Prove
 
 - Hermes can discover and load the local `ask-dongfeng` skill.
 - Ask DongFeng produces outputs that differ from ordinary planning by adding sensors, comparators, controllers, feedback cadence, and human gates.
 - The skill can wrap another workflow skill (`writing-plans`) instead of replacing it.
 - The bundled validator can be used from inside a Hermes run to check a generated artifact.
+- Ask DongFeng can produce a full `DongFeng Packet`, not just a standalone YAML control artifact.
