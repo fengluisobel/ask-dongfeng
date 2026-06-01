@@ -78,6 +78,15 @@ hermes chat --skills ask-dongfeng
 hermes skills list --source local --enabled-only | grep ask-dongfeng
 ```
 
+运行本地 smoke test：
+
+```bash
+scripts/smoke_hermes.sh
+scripts/smoke_hermes.sh --live
+```
+
+`--live` 会通过 Hermes 真实调用模型，需要本地已经配置好 provider credentials。
+
 如果不想运行安装脚本，也可以手动安装：
 
 ```bash
@@ -300,6 +309,7 @@ ask-dongfeng/
 |   `-- review-questions.md
 |-- scripts/
 |   |-- install_hermes.sh
+|   |-- smoke_hermes.sh
 |   |-- validate_artifact.py
 |   `-- validate_skill.py
 |-- LICENSE

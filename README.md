@@ -82,6 +82,15 @@ Verify local install:
 hermes skills list --source local --enabled-only | grep ask-dongfeng
 ```
 
+Run a local smoke test:
+
+```bash
+scripts/smoke_hermes.sh
+scripts/smoke_hermes.sh --live
+```
+
+`--live` makes a real model call through Hermes and requires configured provider credentials.
+
 Manual install, if you prefer not to run the installer:
 
 ```bash
@@ -326,6 +335,7 @@ ask-dongfeng/
 |   `-- review-questions.md
 |-- scripts/
 |   |-- install_hermes.sh
+|   |-- smoke_hermes.sh
 |   |-- validate_artifact.py
 |   `-- validate_skill.py
 |-- LICENSE
