@@ -72,7 +72,7 @@ Hermes is the primary target.
 
 ```bash
 git clone https://github.com/fengluisobel/ask-dongfeng.git && cd ask-dongfeng
-SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"; mkdir -p "$SKILL_HOME"; cp -a SKILL.md references scripts agents "$SKILL_HOME/"
+scripts/install_hermes.sh
 hermes chat --skills ask-dongfeng
 ```
 
@@ -80,6 +80,14 @@ Verify local install:
 
 ```bash
 hermes skills list --source local --enabled-only | grep ask-dongfeng
+```
+
+Manual install, if you prefer not to run the installer:
+
+```bash
+SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"
+mkdir -p "$SKILL_HOME"
+cp -a SKILL.md references scripts agents "$SKILL_HOME/"
 ```
 
 One-shot example:
@@ -317,6 +325,7 @@ ask-dongfeng/
 |   |-- examples.md
 |   `-- review-questions.md
 |-- scripts/
+|   |-- install_hermes.sh
 |   |-- validate_artifact.py
 |   `-- validate_skill.py
 |-- LICENSE

@@ -4,13 +4,13 @@
 
 [English](./README.md) | 简体中文
 
-Ask DongFeng 是一个以 Hermes 为主目标的 skill，用来把模糊目标、产品想法、工作流或项目系统，变成可审查的工程控制闭环。
+Ask DongFeng 是一个 Hermes-first skill，用来把模糊目标、产品想法、工作流或项目系统，转成可审查的工程控制闭环。
 
 30 秒说明：
 
-- 普通 planning 负责说“要做什么”。
-- Ask DongFeng 负责说“怎么发现跑偏、什么时候纠偏、哪里必须让人来拍板”。
-- 它的核心输出是 `control-artifact`，适合放在 spec、implementation plan、code review、workflow design 之前。
+- 普通计划回答“下一步做什么”。
+- Ask DongFeng 回答“如何观察跑偏、什么时候纠偏、哪里必须人工确认”。
+- 输出是一个 `control-artifact`，适合放在 spec、implementation plan、code review 或 workflow design 的上游。
 
 核心闭环：
 
@@ -22,7 +22,7 @@ Ask DongFeng 是一个以 Hermes 为主目标的 skill，用来把模糊目标�
   -> spec / plan / code / workflow
 ```
 
-## 它输出什么
+## 输出什么
 
 Ask DongFeng 输出一个 `control-artifact`，通常包含：
 
@@ -37,33 +37,53 @@ Ask DongFeng 输出一个 `control-artifact`，通常包含：
 - `risks`
 - `next_actions`
 
-适用场景不是“我需要更多任务列表”，而是“这件事如果没有观察、比较、纠偏，很容易悄悄跑偏”。
+它适合的场景不是“我需要更多任务列表”，而是“这件事可能在执行中悄悄跑偏，需要观察、比较、纠偏和审查”。
 
-## 5 分钟快速评估
+## 5 分钟评估
 
 1. 先看样例：[examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
-2. 运行校验器：
+2. 跑 validator：
 
    ```bash
    python scripts/validate_artifact.py examples/sample-control-artifact.yaml
    ```
 
-3. 看下面任意一个 prompt，判断它是否适合做你现有 spec / plan 工作流的上游控制框架。
+3. 再看真实 Hermes 运行记录：[examples/hermes-run-transcripts.md](./examples/hermes-run-transcripts.md)
+
+最快的 before/after 对比：
+
+- [examples/demo-before-after.md](./examples/demo-before-after.md)
+
+可验证的样例 artifact：
+
+- [examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
+- [examples/github-feedback-loop.yaml](./examples/github-feedback-loop.yaml)
+- [examples/superpowers-writing-plans.yaml](./examples/superpowers-writing-plans.yaml)
+- [examples/spike-sisyphus-loop.yaml](./examples/spike-sisyphus-loop.yaml)
+- [examples/tdd-precommit-quality-system.yaml](./examples/tdd-precommit-quality-system.yaml)
 
 ## 快速开始
 
-Hermes 是主目标平台。
+Hermes 是主要目标平台。
 
 ```bash
 git clone https://github.com/fengluisobel/ask-dongfeng.git && cd ask-dongfeng
-SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"; mkdir -p "$SKILL_HOME"; cp -a SKILL.md references scripts agents "$SKILL_HOME/"
+scripts/install_hermes.sh
 hermes chat --skills ask-dongfeng
 ```
 
-验证安装：
+验证本地安装：
 
 ```bash
 hermes skills list --source local --enabled-only | grep ask-dongfeng
+```
+
+如果不想运行安装脚本，也可以手动安装：
+
+```bash
+SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"
+mkdir -p "$SKILL_HOME"
+cp -a SKILL.md references scripts agents "$SKILL_HOME/"
 ```
 
 一次性调用示例：
@@ -74,47 +94,32 @@ hermes chat --skills ask-dongfeng -q "Use Ask DongFeng to turn this goal into a 
 
 ## 兼容性
 
-这个仓库遵循常见的 `SKILL.md + references/ + scripts/ + agents/` 结构，因此不只可以给 Hermes 用。
+Ask DongFeng 面向 Hermes 优先设计，但仓库遵循常见的 `SKILL.md + references/ + scripts/ + agents/` 结构，也可以被 Codex 或 Claude 类 agent 读取使用。
 
 ### Hermes
 
-安装到本地 Hermes skill 目录：
-
 ```bash
-SKILL_HOME="${HERMES_HOME:-$HOME/.hermes}/skills/software-development/ask-dongfeng"
-mkdir -p "$SKILL_HOME"
-cp -a SKILL.md references scripts agents "$SKILL_HOME/"
+scripts/install_hermes.sh
 hermes chat --skills ask-dongfeng
 ```
 
 ### Codex / OpenAI Skills
-
-作为本地 Codex skill 安装：
 
 ```bash
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
 cp -a . "${CODEX_HOME:-$HOME/.codex}/skills/ask-dongfeng"
 ```
 
-然后让 Codex 使用 `ask-dongfeng` 做 control-loop planning。
+然后让 Codex 在控制闭环、spec 上游设计、workflow 稳定性审查等任务里使用 `ask-dongfeng`。
 
 ### Claude / Claude Code
-
-作为个人 Claude skill 安装：
 
 ```bash
 mkdir -p "$HOME/.claude/skills"
 cp -a . "$HOME/.claude/skills/ask-dongfeng"
 ```
 
-或者作为项目级 skill：
-
-```bash
-mkdir -p .claude/skills
-cp -a /path/to/ask-dongfeng .claude/skills/ask-dongfeng
-```
-
-Claude 可以直接使用说明部分；Python 校验脚本属于可选项，取决于运行环境是否允许执行脚本。
+Claude 可以直接使用 `SKILL.md` 和 `references/` 里的说明。Python validator 是可选增强，取决于运行环境是否允许执行脚本。
 
 ## 示例 Prompt
 
@@ -132,7 +137,11 @@ Constraints:
 Output a concise YAML control-artifact with controlled_object, system_boundary, variables, sensors, comparators, controllers, feedback_schedule, human_review_gates, risks, and next_actions.
 ```
 
-### 2. superpowers 风格 writing-plans
+样例 artifact：
+
+- [examples/sample-control-artifact.yaml](./examples/sample-control-artifact.yaml)
+
+### 2. Superpowers 风格 writing-plans
 
 ```text
 Use Ask DongFeng to review a superpowers-style writing-plans workflow.
@@ -146,7 +155,11 @@ It can produce good plans, but it may not detect when execution drifts from the 
 Output a control-artifact and explain what Ask DongFeng adds beyond ordinary planning.
 ```
 
-### 3. spike / 西西弗斯循环控制
+样例 artifact：
+
+- [examples/superpowers-writing-plans.yaml](./examples/superpowers-writing-plans.yaml)
+
+### 3. Spike / 西西弗斯循环控制
 
 ```text
 Use Ask DongFeng to control a spike workflow.
@@ -160,74 +173,85 @@ The workflow can become an endless "needs more investigation" loop.
 Model this as a control loop. Focus on stopping rules, repeated-experiment detection, verdict gates, and system review.
 ```
 
-## 校验器
+样例 artifact：
 
-仓库里有两个轻量校验器。
+- [examples/spike-sisyphus-loop.yaml](./examples/spike-sisyphus-loop.yaml)
 
-校验生成出的 control artifact：
+### 4. GitHub 反馈闭环
+
+```text
+Use Ask DongFeng to turn this goal into a control loop:
+GitHub users should quickly understand Ask DongFeng, install it, try it, and file actionable feedback that can drive fast iteration.
+
+Constraints:
+- keep the project small
+- avoid SaaS
+- avoid heavy process
+
+Output a concise YAML control-artifact.
+```
+
+样例 artifact：
+
+- [examples/github-feedback-loop.yaml](./examples/github-feedback-loop.yaml)
+
+真实 Hermes 运行记录：
+
+- [examples/hermes-run-transcripts.md](./examples/hermes-run-transcripts.md)
+
+## 它比普通计划多什么
+
+普通计划通常输出：
+
+- 要做哪些任务
+- 大概顺序是什么
+- 最后怎么交付
+
+Ask DongFeng 额外要求：
+
+- 被控制对象是什么
+- 用什么信号观察跑偏
+- 什么阈值算 green / yellow / red
+- 跑偏后执行什么纠偏动作
+- 哪些地方必须人工审查
+- action / parameter / system 三层反馈节奏是什么
+
+## Validator
+
+验证生成的 control artifact：
 
 ```bash
 python scripts/validate_artifact.py path/to/artifact.md
 ```
 
-校验 skill 包结构本身：
+验证 skill 包结构：
 
 ```bash
 python scripts/validate_skill.py SKILL.md
 ```
 
-`validate_artifact.py` 会检查：
+`validate_artifact.py` 会检查核心字段是否存在，并对 comparator、controller、feedback layer 做保守提醒。它不判断策略是否高明，只检查 artifact 是否完整。
 
-- 是否缺 `controlled_object`
-- 是否缺 `system_boundary`
-- 是否缺 `variables`
-- 是否缺 `sensors`
-- 是否缺 `comparators`
-- 是否缺 `controllers`
-- 是否缺 `feedback_schedule`
-- 是否缺 `human_review_gates`
-- 是否缺 `risks`
-- 是否缺 `next_actions`
+## 反馈和迭代
 
-它还会提示：
+Ask DongFeng 使用 GitHub Issues 作为反馈闭环。
 
-- comparator 是否缺 `green/yellow/red`
-- controller 是否缺 `trigger/action`
-- feedback 是否缺 `action / parameter / system` 三层
+Issue 模板支持：
 
-`validate_skill.py` 会检查：
+- 安装、validator 或 skill 包问题
+- 有具体场景的功能建议
+- 带真实 prompt / output excerpt 的 use-case feedback
 
-- YAML frontmatter 是否存在
-- 是否有必需的 `name` 和 `description`
-- 是否有不该出现的顶层 key
-- `SKILL.md` 里引用的 bundled files 是否真实存在
+维护者循环：
 
-这两个脚本都只做保守的结构检查，不负责判断“策略是否高明”。
+- 尽量在 48 小时内 triage 新 issue
+- 按失败面打标签：install、first-run、validator、example、documentation、scope
+- 重复出现的问题优先转成 example artifact、validator rule、README patch 或 `SKILL.md` 修改
+- 行为变化只在 validators 和至少一次 Hermes self-test 通过后发布 patch release
 
-## 仓库结构
+这个反馈闭环本身也有 artifact：
 
-```text
-ask-dongfeng/
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── agents/
-│   └── openai.yaml
-├── examples/
-│   └── sample-control-artifact.yaml
-├── references/
-│   ├── artifact-schema.md
-│   ├── control-framework.md
-│   ├── examples.md
-│   └── review-questions.md
-├── scripts/
-│   ├── validate_artifact.py
-│   └── validate_skill.py
-├── LICENSE
-├── README.md
-├── README.zh-CN.md
-└── SKILL.md
-```
+- [examples/github-feedback-loop.yaml](./examples/github-feedback-loop.yaml)
 
 ## 边界
 
@@ -240,6 +264,49 @@ ask-dongfeng/
 - database
 - automatic code generation
 - 超出 control-loop framing 本身的大规模 workflow automation
+
+不适合：
+
+- 很小、验收标准很明显的一次性任务
+- 只需要 brainstorm、不需要执行闭环的讨论
+- 想要直接生成代码或替代完整 spec 工具的场景
+- 金融、法律、医疗或安全关键执行的自动化决策
+
+## 仓库结构
+
+```text
+ask-dongfeng/
+|-- .github/
+|   |-- ISSUE_TEMPLATE/
+|   |   |-- bug_report.md
+|   |   |-- feature_request.md
+|   |   `-- use_case_feedback.yml
+|   `-- workflows/
+|       `-- ci.yml
+|-- agents/
+|   `-- openai.yaml
+|-- examples/
+|   |-- demo-before-after.md
+|   |-- github-feedback-loop.yaml
+|   |-- hermes-run-transcripts.md
+|   |-- sample-control-artifact.yaml
+|   |-- spike-sisyphus-loop.yaml
+|   |-- superpowers-writing-plans.yaml
+|   `-- tdd-precommit-quality-system.yaml
+|-- references/
+|   |-- artifact-schema.md
+|   |-- control-framework.md
+|   |-- examples.md
+|   `-- review-questions.md
+|-- scripts/
+|   |-- install_hermes.sh
+|   |-- validate_artifact.py
+|   `-- validate_skill.py
+|-- LICENSE
+|-- README.md
+|-- README.zh-CN.md
+`-- SKILL.md
+```
 
 ## License
 

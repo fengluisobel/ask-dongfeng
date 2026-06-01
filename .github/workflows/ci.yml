@@ -13,6 +13,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: python scripts/validate_skill.py SKILL.md
+      - run: scripts/install_hermes.sh --check-only
       - run: |
           for file in examples/*.yaml; do
             python scripts/validate_artifact.py "$file"
