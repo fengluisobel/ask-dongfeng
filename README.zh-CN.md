@@ -71,6 +71,10 @@ Ask DongFeng 输出一个 `DongFeng Packet`，通常包含：
 
 3. 再看真实 Hermes 运行记录：[examples/hermes-run-transcripts.md](./examples/hermes-run-transcripts.md)
 
+教程：
+
+- [docs/USAGE.md](./docs/USAGE.md)
+
 最快的 before/after 对比：
 
 - [examples/demo-before-after.md](./examples/demo-before-after.md)
@@ -92,6 +96,14 @@ Hermes 是主要目标平台。
 git clone https://github.com/fengluisobel/ask-dongfeng.git && cd ask-dongfeng
 scripts/install_hermes.sh
 hermes chat --skills ask-dongfeng
+```
+
+也可以用封装启动脚本：
+
+```bash
+scripts/ask_dongfeng.sh
+scripts/ask_dongfeng.sh "Use Ask DongFeng in intent-to-spec mode: turn this idea into a DongFeng Packet: ..."
+scripts/ask_dongfeng.sh --quiet "Print only the control-artifact YAML for this goal: ..."
 ```
 
 验证本地安装：
@@ -316,6 +328,8 @@ ask-dongfeng/
 |       `-- ci.yml
 |-- agents/
 |   `-- openai.yaml
+|-- docs/
+|   `-- USAGE.md
 |-- examples/
 |   |-- demo-before-after.md
 |   |-- dongfeng-packet.md
@@ -332,6 +346,7 @@ ask-dongfeng/
 |   |-- operating-modes.md
 |   `-- review-questions.md
 |-- scripts/
+|   |-- ask_dongfeng.sh
 |   |-- install_hermes.sh
 |   |-- smoke_hermes.sh
 |   |-- validate_artifact.py

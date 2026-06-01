@@ -88,6 +88,10 @@ If you want evidence from a real Hermes run, read:
 
 - [examples/hermes-run-transcripts.md](./examples/hermes-run-transcripts.md)
 
+If you want tutorials, read:
+
+- [docs/USAGE.md](./docs/USAGE.md)
+
 ## Quick Start
 
 Hermes is the primary target.
@@ -96,6 +100,14 @@ Hermes is the primary target.
 git clone https://github.com/fengluisobel/ask-dongfeng.git && cd ask-dongfeng
 scripts/install_hermes.sh
 hermes chat --skills ask-dongfeng
+```
+
+Or use the wrapper:
+
+```bash
+scripts/ask_dongfeng.sh
+scripts/ask_dongfeng.sh "Use Ask DongFeng in intent-to-spec mode: turn this idea into a DongFeng Packet: ..."
+scripts/ask_dongfeng.sh --quiet "Print only the control-artifact YAML for this goal: ..."
 ```
 
 Verify local install:
@@ -342,6 +354,8 @@ ask-dongfeng/
 |       `-- ci.yml
 |-- agents/
 |   `-- openai.yaml
+|-- docs/
+|   `-- USAGE.md
 |-- examples/
 |   |-- demo-before-after.md
 |   |-- dongfeng-packet.md
@@ -358,6 +372,7 @@ ask-dongfeng/
 |   |-- operating-modes.md
 |   `-- review-questions.md
 |-- scripts/
+|   |-- ask_dongfeng.sh
 |   |-- install_hermes.sh
 |   |-- smoke_hermes.sh
 |   |-- validate_artifact.py
